@@ -122,6 +122,27 @@ Open your browser and navigate to `http://localhost:3000`.
 6. Click "Run Trajectory" to execute smooth motion
 7. Waypoints appear as glowing orange dragon ball markers in 3D view
 
+## Eye-to-Hand Calibration
+
+The system supports camera-to-robot calibration using a stereo depth camera (OAK-D).
+
+### Overview
+
+Record the robot end effector position in both coordinate systems and compute the rigid transformation:
+```
+P_robot = R @ P_camera + t
+```
+
+### Quick Calibration Workflow
+
+1. **Record pairs**: Camera panel → Select mode → click on end effector → Record
+2. **Compute transform**: `python calibration/calibrate_hand_eye.py calibration_pairs_*.yaml --save`
+3. **Deploy**: Copy `transform_*.yaml` to `backend/camera/cam2bot.yaml`
+
+After calibration, the **C2B** (Camera-to-Base) row shows transformed coordinates in Select mode.
+
+See [calibration/README.md](calibration/README.md) for detailed instructions.
+
 ## Backend API
 
 ### REST Endpoints
@@ -199,8 +220,3 @@ tau_limit = [10.0, 10.0, 10.0, 10.0, 10.0, 3.7]
 impedance_K = [5.0, 5.0, 5.0, 5.0, 5.0, 1.0]  # Stiffness
 impedance_B = [0.5, 0.5, 0.5, 0.5, 0.5, 0.1]  # Damping
 ```
-
-
-
-
-
